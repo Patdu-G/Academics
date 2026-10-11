@@ -13,9 +13,9 @@
         }
 
         .site-header {
-            background-color: #0b3d2e;
-            color: #e8f5ee;
-            border-bottom: 3px solid #033d26;
+            background-color: #550700;
+            color: #e6d61e;
+            
         }
 
         .site-header h1 {
@@ -24,7 +24,7 @@
         }
 
         body {
-            background-color: #07241b;
+            background-color: #02271b;
             color: #e8f5ee;
         }
 
@@ -41,6 +41,71 @@
             grid-template-columns: repeat(12, 1fr);
             grid-template-rows: repeat(3, 200px);
             gap: 0.5rem;
+        }
+
+        .bento-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .bento-img-tall {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.title-bar {
+    width: 60px;
+    height: 4px;
+    border-radius: 2px;
+    margin: 0.6rem 0;
+}
+.bar-ironman { background: #8b0f1f; }
+.bar-doom    { background: #1f5c1a; }
+
+.bento-tagline {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #555;
+    margin: 0;
+}
+
+.bento-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 2rem 1rem 0.75rem;
+    background: linear-gradient(to top, rgba(7, 36, 27, 0.9), transparent);
+    color: #e8f5ee;
+}
+.bento-caption h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+}
+.bento-caption p {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin: 0;
+    opacity: 0.85;
+}
+
+        
+
+        .title-ironman {
+            color: #8b0f1f;
+        }
+
+        .title-doom {
+            color: #1f5c1a;
         }
 
         .b-ironman {
@@ -84,13 +149,21 @@
                         <img src="assets/ironman.jpg" class="bento-img" style="object-position: center 1%;"
                             alt="Iron Man">
                     </div>
-                    <div class="col-8 p-3">Ironman</div>
+                    <div class="col-8 p-3 d-flex flex-column align-items-center justify-content-center text-center">
+    <h2 class="bento-title title-ironman m-0">Ironman</h2>
+    <div class="title-bar bar-ironman"></div>
+    <p class="bento-tagline">Armored Avenger</p>
+</div>
                 </div>
             </div>
 
-            <div class="card p-3 b-right"></div>
+            <div class="card overflow-hidden b-right">
+    <img src="assets/detail.jpg" class="bento-img-tall" style="object-position: center 20%;" alt="Describe the picture">
+</div>
 
-            <div class="card p-3 b-left"></div>
+           <div class="card overflow-hidden b-left">
+    <img src="assets/doomquest.jpg" class="bento-img-tall" style="object-position: center 20%;" alt="Describe the picture">
+</div>
 
             <div class="card overflow-hidden b-pic">
                 <img src="assets/pic.jpg" class="bento-img" style="object-position: center 25%;" alt="Photo">
@@ -99,7 +172,11 @@
 
             <div class="card overflow-hidden b-doom">
                 <div class="row g-0 h-100">
-                    <div class="col-8 p-3">Dr. Doom</div>
+                    <div class="col-8 p-3 d-flex flex-column align-items-center justify-content-center text-center">
+    <h2 class="bento-title title-doom m-0">Dr. Doom</h2>
+    <div class="title-bar bar-doom"></div>
+    <p class="bento-tagline">Monarch of Latveria</p>
+</div>
                     <div class="col-4">
                         <img src="assets/doom.jpg" class="bento-img" style="object-position: center 15%;"
                             alt="Dr. Doom">
