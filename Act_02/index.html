@@ -7,63 +7,166 @@
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+<style>
+    .hero {
+        min-height: 800px;
+        background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 100%),
+            url("assets/bg.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .hero-img {
+        max-height: 520px;
+        filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6));
+    }
+</style>
 
 <body>
 
-    <body>
-        <div class="container">
-            <div class="row" id="parent">
-                <!-- cards render here -->
-            </div>
-        </div>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-black py-3">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand fw-bolder fs-3 fst-italic" href="#">POP!UP</a>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
-        <script>
-            class ProductCard {
-                constructor(category, title, specs, price, image) {
-                    this.category = category;
-                    this.title = title;
-                    this.specs = specs;
-                    this.price = price;
-                    this.image = image;
-                }
-                render() {
-                    return `
-      <div class="col-12 col-md-6 col-lg-4">
-        <div class="card p-3 my-3 shadow rounded-4">
-          <div class="row g-3">
-            <div class="col-5">
-              <img src="${this.image}" class="img-fluid rounded-3" alt="${this.title}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto ms-lg-4 gap-lg-3 text-uppercase fw-bold small">
+                        <li class="nav-item"><a class="nav-link" href="#">Customize</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Deals</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Fandoms</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">New &amp; Featured</a></li>
+                    </ul>
+
+                    <form class="position-relative me-lg-4 my-3 my-lg-0">
+                        <input type="search" class="form-control rounded-pill pe-5" placeholder="Search">
+                        <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"></i>
+                    </form>
+
+                    <div class="d-flex align-items-center gap-4 text-white fs-4">
+                        <i class="bi bi-heart"></i>
+                        <i class="bi bi-person-circle"></i>
+                        <span class="position-relative">
+                            <i class="bi bi-bag"></i>
+                            <span
+                                class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger fs-6">0</span>
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="col-7">
-              <div class="text-uppercase text-muted small">${this.category}</div>
-              <div class="h5">${this.title}</div>
-              <div class="small text-secondary">(${this.specs})</div>
-            </div>
-          </div>
-          <div class="h4 mt-3">₱${this.price.toLocaleString("en-PH", { minimumFractionDigits: 2 })}</div>
-          <button class="btn btn-dark rounded-pill">Add to Cart</button>
+        </nav>
+
+        <div class="bg-dark text-white text-center small py-2 border-top border-secondary">
+            Free Shipping on Orders ₱3,000+
         </div>
-      </div>`;
-                }
+    </header>
+
+    <section class="hero text-white d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <div class="text-uppercase fw-bold small mb-2">Avengers: Doomsday</div>
+                    <h1 class="display-4 fw-bolder">Limited Time Offer</h1>
+                    <p class="fs-5 mb-4">Get two Doctor Doom collectibles for ₱1,800 for a limited time.</p>
+                    <a href="#" class="btn btn-light rounded-pill fw-bold text-uppercase px-4">Shop Collection</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <div class="container mt-5" id="sections"></div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        class ProductCard {
+            static colors = {
+                "Marvel": "#e62429",
+                "Jujutsu Kaisen": "#6f42c1",
+                "DC": "#0476f2",
+                "Pokémon": "#f0a500",
+            };
+
+            constructor(category, title, specs, price, image) {
+                this.category = category;
+                this.title = title;
+                this.specs = specs;
+                this.price = price;
+                this.image = image;
             }
 
-            var elParent = document.getElementById("parent");
+            render() {
+                const color = ProductCard.colors[this.category] || "#212529";
+                return `
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card p-3 shadow rounded-4 h-100">
+            <div class="row g-4">
+              <div class="col-7">
+                <img src="${this.image}" class="img-fluid" alt="${this.title}">
+              </div>
+              <div class="col-5 d-flex flex-column">
+                <span class="badge rounded-pill mb-2 align-self-start" style="background: ${color};">${this.category}</span>
+                <div class="h5 fw-bold">${this.title}</div>
+                <div class="small text-secondary mb-2">${this.specs}</div>
+                <div class="h3 fw-bold text-dark mt-auto mb-2">₱${this.price.toLocaleString("en-PH", { minimumFractionDigits: 2 })}</div>
+                <button class="btn rounded-pill w-100 fw-bold text-white" style="background: ${color};">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+            }
+        }
 
-            var products = [
-                new ProductCard("Marvel", "Doctor Doom", "Funko Pop #561, vinyl, 3.75 in", 1000, "img/doom.png"),
-                new ProductCard("DC", "Batman", "Funko Pop #01, vinyl, 3.75 in", 899, "img/batman.png"),
-                new ProductCard("Pokémon", "Pikachu", "Funko Pop #353, vinyl, 3.75 in", 999, "img/pikachu.png"),
-            ];
+        class ProductSection {
+            constructor(title, products) {
+                this.title = title;
+                this.products = products;
+            }
 
-            products.forEach((p) => {
-                elParent.innerHTML += p.render();
-            });
-        </script>
-    </body>
+            render() {
+                return `
+        <section class="my-5">
+            <h2 class="text-center fw-bolder mb-4">${this.title}</h2>
+            <div class="row g-4">
+                ${this.products.map((p) => p.render()).join("")}
+            </div>
+        </section>`;
+            }
+        }
+
+        var products = [
+            new ProductCard("Marvel", "Doctor Doom", "Concept Series: Pop! Lord Doom (Doomsday)", 1000, "assets/DDoom-F.png"),
+            new ProductCard("Marvel", "Maestro", "Pop! Maestro (Spider-Man Mash-Up)", 899, "assets/Maestro-F.png"),
+            new ProductCard("Marvel", "Death Gambit", "Pop! Death Gambit (X-Men '97)", 999, "assets/DGambit-F.png"),
+            new ProductCard("Jujutsu Kaisen", "Yuta Okkotsu", "Pop! Yuta Okkotsu with Sword)", 1000, "assets/Yuta-F.png"),
+            new ProductCard("Jujutsu Kaisen", "Yuji Itadori", "Pop! Jumbo Yuji Itadori", 899, "assets/Yuji-F.png"),
+            new ProductCard("Jujutsu Kaisen", "Satoru Gojo", "PPop! Satoru Gojo (Red Energy)", 999, "assets/Gojo-F.png"),
+            new ProductCard("Halloween", "Krampus", "Pop! Krampus", 1000, "assets/Krampus-F.png"),
+            new ProductCard("Halloween", "Beetlejuice", "Pop! Beetlejuice (TV Series)", 899, "assets/BJ-F.png"),
+            new ProductCard("Halloween", "Michael Myers", "Pop! Michael Myers on Fire", 999, "assets/MM-F.png"),
+        ];
+
+        var elSections = document.getElementById("sections");
+
+        var sections = [
+            new ProductSection("New Releases", products.slice(0, 3)),
+            new ProductSection("Jujutsu Kaisen", products.slice(3, 6)),
+            new ProductSection("Halloween", products.slice(6, 9)),
+        ];
+
+        sections.forEach((s) => {
+            elSections.innerHTML += s.render();
+        });
+    </script>
+</body>
 
 
 </html>
