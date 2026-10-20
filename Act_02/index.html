@@ -91,16 +91,17 @@
             static colors = {
                 "Marvel": "#e62429",
                 "Jujutsu Kaisen": "#6f42c1",
-                "DC": "#0476f2",
-                "Pokémon": "#f0a500",
+                "Halloween": "#ff7518",
+                "WWE": "#00007f",
             };
 
-            constructor(category, title, specs, price, image) {
+            constructor(category, title, specs, price, image, hoverImage) {
                 this.category = category;
                 this.title = title;
                 this.specs = specs;
                 this.price = price;
                 this.image = image;
+                this.hoverImage = hoverImage || image;
             }
 
             render() {
@@ -110,7 +111,9 @@
           <div class="card p-3 shadow rounded-4 h-100">
             <div class="row g-4">
               <div class="col-7">
-                <img src="${this.image}" class="img-fluid" alt="${this.title}">
+               <img src="${this.image}" class="img-fluid" alt="${this.title}"
+     onmouseover="this.src='${this.hoverImage}'"
+     onmouseout="this.src='${this.image}'">
               </div>
               <div class="col-5 d-flex flex-column">
                 <span class="badge rounded-pill mb-2 align-self-start" style="background: ${color};">${this.category}</span>
@@ -143,23 +146,27 @@
         }
 
         var products = [
-            new ProductCard("Marvel", "Doctor Doom", "Concept Series: Pop! Lord Doom (Doomsday)", 1000, "assets/DDoom-F.png"),
-            new ProductCard("Marvel", "Maestro", "Pop! Maestro (Spider-Man Mash-Up)", 899, "assets/Maestro-F.png"),
-            new ProductCard("Marvel", "Death Gambit", "Pop! Death Gambit (X-Men '97)", 999, "assets/DGambit-F.png"),
-            new ProductCard("Jujutsu Kaisen", "Yuta Okkotsu", "Pop! Yuta Okkotsu with Sword)", 1000, "assets/Yuta-F.png"),
-            new ProductCard("Jujutsu Kaisen", "Yuji Itadori", "Pop! Jumbo Yuji Itadori", 899, "assets/Yuji-F.png"),
-            new ProductCard("Jujutsu Kaisen", "Satoru Gojo", "PPop! Satoru Gojo (Red Energy)", 999, "assets/Gojo-F.png"),
-            new ProductCard("Halloween", "Krampus", "Pop! Krampus", 1000, "assets/Krampus-F.png"),
-            new ProductCard("Halloween", "Beetlejuice", "Pop! Beetlejuice (TV Series)", 899, "assets/BJ-F.png"),
-            new ProductCard("Halloween", "Michael Myers", "Pop! Michael Myers on Fire", 999, "assets/MM-F.png"),
+            new ProductCard("Marvel", "Doctor Doom", "Concept Series: Pop! Lord Doom (Doomsday)", 1000, "assets/DDoom-F.png", "assets/DDoom.png"),
+            new ProductCard("Marvel", "Maestro", "Pop! Maestro (Spider-Man Mash-Up)", 899, "assets/Maestro-F.png", "assets/Maestro.png"),
+            new ProductCard("Marvel", "Death Gambit", "Pop! Death Gambit (X-Men '97)", 999, "assets/DGambit-F.png", "assets/DGambit.png"),
+            new ProductCard("Jujutsu Kaisen", "Yuta Okkotsu", "Pop! Yuta Okkotsu with Sword", 1000, "assets/Yuta-F.png", "assets/Yuta.png"),
+            new ProductCard("Jujutsu Kaisen", "Yuji Itadori", "Pop! Jumbo Yuji Itadori", 899, "assets/Yuji-F.png", "assets/Yuji.png"),
+            new ProductCard("Jujutsu Kaisen", "Satoru Gojo", "Pop! Satoru Gojo (Red Energy)", 999, "assets/Gojo-F.png", "assets/Gojo.png"),
+            new ProductCard("Halloween", "Krampus", "Pop! Krampus", 1000, "assets/Krampus-F.png", "assets/Krampus.png"),
+            new ProductCard("Halloween", "Beetlejuice", "Pop! Beetlejuice (TV Series)", 899, "assets/BJ-F.png", "assets/BJ.png"),
+            new ProductCard("Halloween", "Michael Myers", "Pop! Michael Myers on Fire", 999, "assets/MM-F.png", "assets/MM.png"),
+            new ProductCard("WWE", "Penta", "Pop! Penta", 1000, "assets/Penta-F.png", "assets/Penta.png"),
+            new ProductCard("WWE", "Roman Reigns", "Pop! Roman Reigns", 899, "assets/RR-F.png", "assets/RR.png"),
+            new ProductCard("WWE", "Shinsuke Nakamura", "Pop! Shinsuke Nakamura", 999, "assets/SN-F.png", "assets/SN.png"),
         ];
 
         var elSections = document.getElementById("sections");
 
         var sections = [
-            new ProductSection("New Releases", products.slice(0, 3)),
+            new ProductSection("Marvel", products.slice(0, 3)),
             new ProductSection("Jujutsu Kaisen", products.slice(3, 6)),
             new ProductSection("Halloween", products.slice(6, 9)),
+            new ProductSection("WWE", products.slice(9, 12)),
         ];
 
         sections.forEach((s) => {
