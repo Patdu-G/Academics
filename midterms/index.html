@@ -1,13 +1,574 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
-  </head>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
-  </body>
+    <title>hardstuck.gg</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    
+    :root { --gold:#c8aa6e; --ink:#010a13; --panel:#0a1428; --line:#1e2d44; --pad:clamp(20px,5vw,72px); }
+
+    body {
+        background: var(--ink);
+        color: #e8e2d0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        min-height: 100vh;
+    }
+
+    .brand {
+        color: #fff;
+        letter-spacing: .02em;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .brand span,
+    .logo span {
+        color: var(--gold);
+    }
+
+    /* Landing */
+    .landing {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        overflow: hidden;
+    }
+
+    .landing-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center 20%;
+        filter: brightness(.5);
+    }
+
+    .landing-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, rgba(1, 10, 19, 0) 30%, rgba(1, 10, 19, .85) 100%),
+            linear-gradient(0deg, rgba(1, 10, 19, 1) 0%, rgba(1, 10, 19, 0) 35%);
+    }
+
+    .landing > :not(.landing-bg) {
+        position: relative;
+    }
+
+    .logo {
+        font-size: clamp(3rem, 10vw, 5.5rem);
+        font-weight: 800;
+        letter-spacing: -.02em;
+        line-height: 1;
+        color: #fff;
+    }
+
+    .tagline {
+        color: #cfc9b8;
+        margin: 12px 0 28px;
+    }
+
+    .search-wrap {
+        position: relative;
+        width: 100%;
+        max-width: 640px;
+    }
+
+    .search-input {
+        height: 60px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 4px;
+        border: 0;
+        padding: 0 20px;
+        background: #fff;
+        color: #1b1b2f;
+    }
+
+    .search-input:focus {
+        box-shadow: 0 0 0 3px rgba(200, 170, 110, .6);
+    }
+
+    .suggest {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        z-index: 20;
+        text-align: left;
+    }
+
+    .suggest a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 14px;
+        color: #e8e2d0;
+        text-decoration: none;
+    }
+
+    .suggest a:hover,
+    .suggest a.sel {
+        background: #14213d;
+    }
+
+    .suggest img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .suggest small {
+        margin-left: auto;
+        color: var(--gold);
+    }
+
+    /* Grid page */
+    .champ-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        text-decoration: none;
+        color: inherit;
+        transition: border-color .15s;
+    }
+
+    .champ-card:hover {
+        border-color: var(--gold);
+        color: #fff;
+    }
+
+    .champ-card img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+    }
+
+    /* Detail page */
+    .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center top;
+        transition: background-image .2s;
+    }
+
+    .hero-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(1, 10, 19, .92) 0%, rgba(1, 10, 19, .55) 45%, rgba(1, 10, 19, .1) 100%),
+            linear-gradient(0deg, rgba(1, 10, 19, 1) 0%, rgba(1, 10, 19, 0) 40%);
+    }
+
+    .hero > :not(.hero-bg) {
+        position: relative;
+    }
+
+    .hero-pad {
+        padding-left: var(--pad);
+        padding-right: var(--pad);
+    }
+
+    .back-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--gold);
+        background: rgba(1, 10, 19, .6);
+        color: var(--gold);
+        font-size: 1.6rem;
+        line-height: 1;
+        text-decoration: none;
+    }
+
+    .back-arrow:hover {
+        background: var(--gold);
+        color: var(--ink);
+    }
+
+    .champ-name {
+        font-size: clamp(3rem, 9vw, 7rem);
+        font-weight: 800;
+        line-height: 1;
+        margin: 0;
+    }
+
+    .champ-title {
+        color: var(--gold);
+        font-size: 1.25rem;
+    }
+
+    .lore {
+        max-width: 34rem;
+        line-height: 1.6;
+        color: #cfc9b8;
+    }
+
+    .ability-btn {
+        background: var(--panel);
+        border: 2px solid var(--line);
+        padding: 0;
+        width: 56px;
+        height: 56px;
+    }
+
+    .ability-btn img {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .ability-btn.active {
+        border-color: var(--gold);
+    }
+
+    .ability-key {
+        font-size: .75rem;
+        color: var(--gold);
+    }
+
+    .ability-panel {
+        background: rgba(10, 20, 40, .85);
+        border: 1px solid var(--line);
+        max-width: 34rem;
+    }
+
+  .skins-wrap {
+    position: relative;
+    width: min(942px, calc(100% - var(--pad) * 2));
+    margin: 0 auto 32px;
+}
+    .skins {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 8px 0 16px;
+    }
+
+    .skin {
+        flex: 0 0 150px;
+        scroll-snap-align: start;
+        background: none;
+        border: 2px solid transparent;
+        padding: 0;
+        color: inherit;
+        text-align: left;
+    }
+
+    .skin img {
+        width: 100%;
+        display: block;
+        aspect-ratio: 308/560;
+        object-fit: cover;
+    }
+
+    .skin.active {
+        border-color: var(--gold);
+    }
+
+    .skin small {
+        display: block;
+        padding: 6px 2px;
+        font-size: .78rem;
+    }
+
+    .skins::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .skins::-webkit-scrollbar-thumb {
+        background: var(--line);
+    }
+
+    .skin-arrow {
+        position: absolute;
+        top: 38%;
+        transform: translateY(-50%);
+        z-index: 5;
+        width: 44px;
+        height: 68px;
+        border: 1px solid var(--gold);
+        background: rgba(1, 10, 19, .85);
+        color: var(--gold);
+        font-size: 2rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .skin-arrow:hover {
+        background: var(--gold);
+        color: var(--ink);
+    }
+
+    .skin-arrow:disabled {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .skin-arrow.left {
+        left: -12px;
+    }
+
+    .skin-arrow.right {
+        right: -12px;
+    }
+</style>
+</head>
+
+<body>
+    <nav class="navbar border-bottom d-none" id="nav" style="border-color:var(--line)!important">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand brand" href="#/">hardstuck<span>.gg</span></a>
+            <span class="text-secondary small" id="patch"></span>
+        </div>
+    </nav>
+
+    <main id="app"></main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const DD = "https://ddragon.leagueoflegends.com";
+        const app = document.getElementById("app");
+        const nav = document.getElementById("nav");
+        let version, champs = {};
+
+        async function init() {
+            try {
+                version = (await (await fetch(DD + "/api/versions.json")).json())[0];
+                champs = (await (await fetch(`${DD}/cdn/${version}/data/en_US/champion.json`)).json()).data;
+                document.getElementById("patch").textContent = "Patch " + version;
+                window.addEventListener("hashchange", route);
+                route();
+            } catch (e) {
+                app.innerHTML = `<div class="container py-5"><div class="alert alert-danger">Couldn't load champion data. Check your connection and refresh.</div></div>`;
+            }
+        }
+
+
+        function route() {
+            const m = location.hash.match(/^#\/(\w+)/);
+            window.scrollTo(0, 0);
+            nav.classList.toggle("d-none", !m);
+            if (!m) return showLanding();
+            if (m[1] === "champions") return showGrid();
+            champs[m[1]] ? showChampion(m[1]) : showLanding();
+        }
+
+
+        function showLanding() {
+            nav.classList.add("d-none");
+            const list = Object.values(champs);
+            const pick = list[Math.floor(Math.random() * list.length)];
+            app.innerHTML = `
+        <section class="landing text-center">
+          <div class="landing-bg" style="background-image:url('${DD}/cdn/img/champion/splash/${pick.id}_0.jpg')"></div>
+          <div class="logo">hardstuck<span>.gg</span></div>
+          <p class="tagline">Browse every champion, skin and ability.</p>
+          <div class="search-wrap">
+            <input id="search" class="form-control search-input" type="search" autocomplete="off" placeholder="Search a champion" aria-label="Search a champion" autofocus>
+            <div class="suggest d-none" id="suggest"></div>
+          </div>
+          <a href="#/champions" class="btn btn-warning btn-lg mt-4 px-5 fw-semibold">View champions</a>
+        </section>`;
+
+            const input = document.getElementById("search");
+            const box = document.getElementById("suggest");
+            const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+            let matches = [], sel = 0;
+
+            const render = () => {
+                if (!input.value.trim()) { box.classList.add("d-none"); return; }
+                box.classList.remove("d-none");
+                box.innerHTML = matches.length ? matches.map((c, i) => `
+          <a href="#/${c.id}" class="${i === sel ? "sel" : ""}">
+            <img src="${DD}/cdn/${version}/img/champion/${c.image.full}" alt="">
+            <span>${c.name}</span><small>${c.tags[0]}</small>
+          </a>`).join("") : `<div class="p-3 text-secondary small">No champion found. Check the spelling.</div>`;
+            };
+
+            input.oninput = () => {
+                const q = norm(input.value);
+                matches = q ? list.filter(c => norm(c.name).includes(q)).slice(0, 6) : [];
+                sel = 0;
+                render();
+            };
+            input.onkeydown = e => {
+                if (e.key === "ArrowDown") { sel = Math.min(sel + 1, matches.length - 1); render(); e.preventDefault(); }
+                else if (e.key === "ArrowUp") { sel = Math.max(sel - 1, 0); render(); e.preventDefault(); }
+                else if (e.key === "Enter" && matches[sel]) location.hash = "#/" + matches[sel].id;
+            };
+            input.onblur = () => setTimeout(() => box.classList.add("d-none"), 150);
+            input.onfocus = () => { if (input.value.trim()) render(); };
+        }
+
+
+        const PER_PAGE = 10;
+        const gridState = { page: 1, role: "All", q: "" }; // survives going to a champion and back
+
+        function showGrid() {
+            const roles = ["All", "Assassin", "Fighter", "Mage", "Marksman", "Support", "Tank"];
+            app.innerHTML = `
+    <div class="container py-4">
+      <div class="d-flex justify-content-center mb-4">
+        <div class="btn-group flex-wrap" id="roles">
+          ${roles.map(r => `<button class="btn btn-outline-warning btn-sm ${r === gridState.role ? "active" : ""}" data-r="${r}">${r}</button>`).join("")}
+        </div>
+      </div>
+      <div class="row row-cols-2 row-cols-md-5 g-3" id="grid"></div>
+      <div class="d-flex justify-content-center align-items-center gap-3 mt-4" id="pager"></div>
+    </div>`;
+
+            const draw = () => {
+                const list = Object.values(champs).filter(c =>
+                    gridState.role === "All" || c.tags.includes(gridState.role));
+                const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+                gridState.page = Math.min(gridState.page, pages);
+                const cur = gridState.page;
+                const slice = list.slice((cur - 1) * PER_PAGE, cur * PER_PAGE);
+
+                document.getElementById("grid").innerHTML = slice.length ? slice.map(c => `
+      <div class="col">
+        <a class="champ-card d-block" href="#/${c.id}">
+          <img loading="lazy" src="${DD}/cdn/${version}/img/champion/${c.image.full}" alt="${c.name}">
+          <div class="p-2 text-center small">${c.name}</div>
+        </a>
+      </div>`).join("") : `<p class="text-secondary">No champions match. Try a different name or role.</p>`;
+
+                document.getElementById("pager").innerHTML = pages < 2 ? "" : `
+      <button class="btn btn-outline-warning btn-sm" data-p="${cur - 1}" ${cur === 1 ? "disabled" : ""}>Prev</button>
+      <span class="text-secondary">Page ${cur} of ${pages}</span>
+      <button class="btn btn-outline-warning btn-sm" data-p="${cur + 1}" ${cur === pages ? "disabled" : ""}>Next</button>`;
+            };
+
+
+            document.getElementById("roles").onclick = e => {
+                if (!e.target.dataset.r) return;
+                gridState.role = e.target.dataset.r;
+                gridState.page = 1;
+                document.querySelectorAll("#roles .btn").forEach(b => b.classList.toggle("active", b === e.target));
+                draw();
+            };
+            document.getElementById("pager").onclick = e => {
+                const b = e.target.closest("[data-p]");
+                if (!b || b.disabled) return;
+                gridState.page = +b.dataset.p;
+                draw();
+                window.scrollTo(0, 0);
+            };
+            draw();
+        }
+
+
+        async function showChampion(id) {
+            app.innerHTML = `<div class="container py-5 text-secondary">Loading ${champs[id].name}…</div>`;
+            let c;
+            try {
+                c = (await (await fetch(`${DD}/cdn/${version}/data/en_US/champion/${id}.json`)).json()).data[id];
+            } catch (e) {
+                app.innerHTML = `<div class="container py-5"><div class="alert alert-danger">Couldn't load ${id}. <a href="#/champions">Back to all champions</a></div></div>`;
+                return;
+            }
+            const splash = n => `${DD}/cdn/img/champion/splash/${id}_${n}.jpg`;
+            const loading = n => `${DD}/cdn/img/champion/loading/${id}_${n}.jpg`;
+            const diff = champs[id].info.difficulty;
+            const diffLabel = diff <= 3 ? "Low" : diff <= 7 ? "Moderate" : "High";
+            const keys = ["Q", "W", "E", "R"];
+            const abilities = [
+                { key: "Passive", name: c.passive.name, desc: c.passive.description, img: `${DD}/cdn/${version}/img/passive/${c.passive.image.full}` },
+                ...c.spells.map((s, i) => ({ key: keys[i], name: s.name, desc: s.description, img: `${DD}/cdn/${version}/img/spell/${s.image.full}` }))
+            ];
+
+            app.innerHTML = `
+        <section class="hero">
+          <div class="hero-bg" id="bg" style="background-image:url('${splash(0)}')"></div>
+                 <div class="container-fluid hero-pad pt-4"><a href="#/champions" class="back-arrow" aria-label="Back to champions">&#8592;</a></div>
+          <div class="container-fluid hero-pad flex-grow-1 d-flex align-items-center">
+            <div class="py-4">
+              <p class="champ-title mb-1">${c.title}</p>
+              <h1 class="champ-name">${c.name}</h1>
+              <div class="my-3 d-flex gap-2 align-items-center flex-wrap">
+                ${c.tags.map(t => `<span class="badge text-bg-warning">${t}</span>`).join("")}
+                <span class="small text-secondary">Difficulty: ${diffLabel}</span>
+              </div>
+              <p class="lore">${c.lore}</p>
+              <div class="d-flex gap-2 mb-2" id="abilities">
+                ${abilities.map((a, i) => `
+                  <div class="text-center">
+                    <button class="ability-btn ${i === 0 ? "active" : ""}" data-i="${i}" aria-label="${a.key}: ${a.name}"><img src="${a.img}" alt=""></button>
+                    <div class="ability-key">${a.key}</div>
+                  </div>`).join("")}
+              </div>
+              <div class="ability-panel p-3" id="ability-panel"></div>
+            </div>
+          </div>
+          <div>
+     
+                      <div class="skins-wrap">
+              <button class="skin-arrow left" id="skin-prev" aria-label="Previous skins">&#8249;</button>
+              <div class="skins" id="skins">
+                ${c.skins.map((s, i) => `
+                  <button class="skin ${i === 0 ? "active" : ""}" data-n="${s.num}">
+                    <img loading="lazy" src="${loading(s.num)}" alt="" onerror="this.closest('.skin').remove()">
+                    <small>${s.name === "default" ? c.name : s.name}</small>
+                  </button>`).join("")}
+              </div>
+              <button class="skin-arrow right" id="skin-next" aria-label="Next skins">&#8250;</button>
+            </div>
+          </div>
+        </section>`;
+
+            const panel = document.getElementById("ability-panel");
+            const showAbility = i => {
+                const a = abilities[i];
+                panel.innerHTML = `<h2 class="h6 text-warning mb-1">${a.key}: ${a.name}</h2><div class="small">${a.desc}</div>`;
+                document.querySelectorAll(".ability-btn").forEach((b, j) => b.classList.toggle("active", j === i));
+            };
+            showAbility(0);
+            document.getElementById("abilities").onclick = e => {
+                const b = e.target.closest(".ability-btn");
+                if (b) showAbility(+b.dataset.i);
+            };
+            document.getElementById("skins").onclick = e => {
+                const b = e.target.closest(".skin");
+                if (!b) return;
+                document.getElementById("bg").style.backgroundImage = `url('${splash(b.dataset.n)}')`;
+                document.querySelectorAll(".skin").forEach(s => s.classList.toggle("active", s === b));
+            };
+
+            const strip = document.getElementById("skins");
+            const prev = document.getElementById("skin-prev");
+            const next = document.getElementById("skin-next");
+            const updateArrows = () => {
+                prev.disabled = strip.scrollLeft <= 4;
+                next.disabled = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
+            };
+            prev.onclick = () => strip.scrollBy({ left: -strip.clientWidth * 0.8, behavior: "smooth" });
+            next.onclick = () => strip.scrollBy({ left: strip.clientWidth * 0.8, behavior: "smooth" });
+            strip.onscroll = updateArrows;
+            window.onresize = updateArrows;
+            updateArrows();
+            setTimeout(updateArrows, 500);
+        }
+
+        init();
+    </script>
+</body>
+
 </html>
